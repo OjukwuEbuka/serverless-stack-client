@@ -1,7 +1,9 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './App.css';
+import Routes from "./Routes";
+
 
 function App() {
   return (
@@ -12,7 +14,14 @@ function App() {
             <Link to="/">Scratch</Link>
           </Navbar.Brand>
         </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav pullRight>
+            <NavItem href="/signup">Sign Up</NavItem>
+            <NavItem href="/login">Log In</NavItem>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
+      <Routes />
     </div>
   );
 }
