@@ -8,14 +8,16 @@ import { useFormFields } from "../libs/hooksLib";
 
 import "./Login.css";
 import LoaderButton from "../components/LoaderButton";
+import ConfirmationForm from "./ConfirmationForm";
 
 const Login = () => {
     // const [email, setEmail] = useState("");
     // const [password, setPassword] = useState("");
-    const { userHasAuthenticated } = useAppContext();
+    const { userHasAuthenticated, setUserEmail } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
     const [fields, handleFieldChange] = useFormFields({email: "", password:""});
+    const [notConfirmed, setNotConfirmed] = useState(false);
 
     const validateForm = () => {
         return fields.email.length > 0 && fields.password.length > 0;
@@ -31,11 +33,19 @@ const Login = () => {
             userHasAuthenticated(true);
             history.push("/");
         } catch (err) {
-            onError(err);
+            if(err instanceof Object && err.message === "User is not confirmed."){
+                setNotConfirmed(true);
+                Auth.resendSignUp(fields.email);
+                setUserEmail(fields.email);
+                alert("Check your email for Confirmation Code")
+            } else{
+                onError(err);
+            }
             setIsLoading(false);
         }
     }
 
+    if(notConfirmed) return <ConfirmationForm />
     return (
         <div className="Login">
             <form onSubmit={handleSubmit}>

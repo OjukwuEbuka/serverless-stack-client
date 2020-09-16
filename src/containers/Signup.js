@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
 import { 
     FormGroup, 
     FormControl, 
@@ -14,12 +13,11 @@ import { useFormFields } from "../libs/hooksLib";
 
 import "./Signup.css";
 import LoaderButton from "../components/LoaderButton";
+import ConfirmationForm from "./ConfirmationForm";
 
 const Login = () => {
-    const { userHasAuthenticated } = useAppContext();
     const [newUser, setNewUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const history = useHistory();
     const [fields, handleFieldChange] = useFormFields({
         email: "",
         password:"",
@@ -33,10 +31,6 @@ const Login = () => {
             fields.password.length > 0&&
             fields.password === fields.confirmPassword
         );
-    }
-
-    const validateConfirmationForm = () => {
-        return fields.confirmationCode.length > 0;
     }
 
     const handleSubmit = async e => {
@@ -55,49 +49,6 @@ const Login = () => {
             onError(err);
             setIsLoading(false);
         }
-    }
-
-    const handleConfirmationSubmit = async e => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        try {
-            await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-            await Auth.signIn(fields.email, fields.password);
-            userHasAuthenticated(true);
-            history.push("/");
-        } catch (err) {
-            onError(e);
-            setIsLoading(false);
-        }
-    }
-
-    const renderConfirmationForm = () => {
-        return (
-            <form onSubmit={handleConfirmationSubmit}>
-                <FormGroup 
-                    controlId="confirmationCode"
-                    bsSize="large">
-                    <ControlLabel>Confirmation Code</ControlLabel>
-                    <FormControl
-                        autoFocus
-                        type="tel"
-                        onChange={handleFieldChange}
-                        value={fields.confirmationCode}
-                    />
-                    <HelpBlock>Please check your email for the code.</HelpBlock>
-                </FormGroup>
-                <LoaderButton 
-                    block 
-                    bsSize="large"
-                    isLoading={isLoading}
-                    disabled={!validateConfirmationForm()} 
-                    type="submit"
-                >
-                    Verify
-                </LoaderButton>
-            </form>
-        )
     }
 
     const renderForm = () => {
@@ -138,12 +89,12 @@ const Login = () => {
                     Signup
                 </LoaderButton>
             </form>
-        )
+        );
     }
 
     return (
         <div className="Signup">
-            {newUser === null ? renderForm() : renderConfirmationForm()}
+            {newUser === null ? renderForm() : <ConfirmationForm />}
         </div>
     );
 }

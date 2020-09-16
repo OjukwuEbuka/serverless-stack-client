@@ -1,9 +1,9 @@
 @media all and (min-width: 480px) {
-    .Login {
+    .Login, .ConfirmForm {
         padding: 60px;
     }
 
-    .Login form {
+    .Login form, .ConfirmForm {
         margin: 0 auto;
         max-width: 320px;
     }

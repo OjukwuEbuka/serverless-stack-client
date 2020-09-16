@@ -12,6 +12,7 @@ import { onError } from "./libs/errorLib";
 function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [userEmail, setUserEmail] = useState('');
   const history = useHistory();
 
   const handleLogout = async () => {
@@ -22,7 +23,7 @@ function App() {
 
   useEffect(() => {
     onLoad();
-  }, {});
+  }, []);
 
   async function onLoad() {
     try {
@@ -63,7 +64,12 @@ function App() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+      <AppContext.Provider value={{ 
+        isAuthenticated, 
+        userHasAuthenticated,
+        userEmail,
+        setUserEmail
+         }}>
         <Routes />
       </AppContext.Provider>
     </div>
