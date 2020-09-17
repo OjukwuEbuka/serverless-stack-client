@@ -1,4 +1,5 @@
 export default {
+    MAX_ATTACHMENT_SIZE,
     s3: {
         REGION: "us-east-1",
         BUCKET: "ebuka-notes-bucket"
