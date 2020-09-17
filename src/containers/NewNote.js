@@ -1,14 +1,15 @@
 import React, { useRef, useState} from "react";
 import { useHistory } from "react-router-dom";
+import { API } from "aws-amplify";
 import {
     FormGroup,
     FormControl,
     ControlLabel
-} from "react-router-bootstrap";
+} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { onError } from "../libs/errorLib";
 import config from "../config";
-import "./NewwNote.css";
+import "./NewNote.css";
 
 export default function NewNote() {
     const file = useRef(null);
@@ -16,13 +17,14 @@ export default function NewNote() {
     const [content, setContent] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+
     const validateForm = () => content.length > 0;
 
     function handleFileChange(e) {
         file.current = e.target.files[0];
     }
 
-    async function handleFileChange(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if(file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
             alert(`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE / 1000000} MB.`);
@@ -30,6 +32,19 @@ export default function NewNote() {
         }
 
         setIsLoading(true);
+        try {
+            await createNote({ content });
+            history.push("/");
+        } catch (err) {
+            onError(err);
+            setIsLoading(false);
+        }
+    }
+
+    function createNote(note) {
+        return API.post("notes", "/notes", {
+            body: note
+        });
     }
 
     return (

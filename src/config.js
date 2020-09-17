@@ -1,12 +1,12 @@
 export default {
-    MAX_ATTACHMENT_SIZE,
+    MAX_ATTACHMENT_SIZE: 5000000,
     s3: {
         REGION: "us-east-1",
         BUCKET: "ebuka-notes-bucket"
     },
     apiGateway: {
         REGION: "us-east-1",
-        URL: " https://tqzfhcn8cg.execute-api.us-east-1.amazonaws.com/prod/"
+        URL: "https://tqzfhcn8cg.execute-api.us-east-1.amazonaws.com/prod"
     },
     cognito: {
         REGION: "us-east-1",
