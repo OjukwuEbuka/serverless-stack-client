@@ -1,4 +1,5 @@
 import { Storage } from "aws-amplify";
+import { onError } from "./errorLib";
 
 export async function s3Upload(file) {
     const filename = `${Date.now()}-${file.name}`;
@@ -7,4 +8,13 @@ export async function s3Upload(file) {
     });
 
     return stored.key;
+}
+
+export async function s3Delete(filename) {
+    try {
+        const res = await Storage.vault.remove(filename);
+        console.log(res);
+    } catch (err) {
+        onError(err);
+    }
 }

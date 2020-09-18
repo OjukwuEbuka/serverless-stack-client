@@ -5,10 +5,11 @@ import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
+import { s3Upload, s3Delete } from "../libs/awsLib";
 
 export default function Notes () {
     const file = useRef(null);
-    const { id } = useParams();
+    let { id } = useParams();
     const history = useHistory();
     const [note, setNote] = useState(null);
     const [content, setContent] = useState("");
@@ -20,6 +21,7 @@ export default function Notes () {
 
         async function onLoad() {
             try {
+                // if(id === null) return;
                 const note = await loadNote();
                 const { content, attachment } = note;
 
@@ -33,6 +35,7 @@ export default function Notes () {
             }
         }
         onLoad();
+        // return () => {id = null;};
     }, [id]);
 
     const validateForm = () => content.length > 0;
@@ -40,6 +43,8 @@ export default function Notes () {
     const formatFilename = str => str.replace(/^\w+-/, "");
 
     const handleFileChange = e => file.current = e.target.files[0];
+
+    const saveNote = note => API.put("notes", `/notes/${id}`, {body:note});
 
     async function handleSubmit(e) {
         let attachment;
@@ -50,8 +55,26 @@ export default function Notes () {
             return;
         }
 
-        setIsLoading(true);
+        try {
+            if(file.current) {
+                attachment = await s3Upload(file.current);
+                await s3Delete(note.attachment);
+            }
+            setIsLoading(true);
+            
+            await saveNote({
+                content,
+                attachment: attachment || note.attachment
+            });
+            history.push("/");
+        } catch (err) {
+            onError(err);
+            setIsLoading(false);
+        }
+
     }
+
+    const deleteNote = () => API.del("notes", `/notes/${id}`);
 
     async function handleDelete(e) {
         e.preventDefault();
@@ -61,6 +84,15 @@ export default function Notes () {
         if(!confirmed) return;
 
         setIsDeleting(true);
+
+        try {
+            await deleteNote();
+            await s3Delete(note.attachment);
+            history.push("/");
+        } catch (err) {
+            onError(err);
+            setIsDeleting(false);
+        }
     }
 
 

@@ -7,6 +7,7 @@ import Signup from "./containers/Signup";
 import Home from "./containers/Home";
 import NewNote from "./containers/NewNote";
 import Notes from "./containers/Notes";
+import Settings from "./containers/Settings";
 
 const Routes = () => {
     return (
@@ -16,6 +17,7 @@ const Routes = () => {
             <Route exact path="/signup"><Signup /></Route>
             <Route exact path="/notes/new"><NewNote /></Route>
             <Route exact path="/notes/:id"><Notes /></Route>
+            <Route exact path="/settings"><Settings /></Route>
             <Route><NotFound /></Route>
         </Switch>
     );
