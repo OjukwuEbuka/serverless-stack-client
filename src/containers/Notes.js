@@ -109,6 +109,9 @@ export default function Notes () {
                         {note.attachment && (
                             <FormGroup>
                                 <ControlLabel>Attachment</ControlLabel>
+                                <div>
+                                    <img width="200" src={note.attachmentURL} />
+                                </div>
                                 <FormControl.Static>
                                     <a
                                         target="_blank"
