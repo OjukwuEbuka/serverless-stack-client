@@ -1,5 +1,6 @@
 export default {
     MAX_ATTACHMENT_SIZE: 5000000,
+    STRIPE_KEY: "pk_test_51GtaHFHjHTlbcgZtakZz9uNQZ8U01Onq3DTdsSEd92RmiUnJSGPlcKpMSlMwVDqMM8GaCSu26Z4eAlQY2eqcrFEu006ZeJRwMv",
     s3: {
         REGION: "us-east-1",
         BUCKET: "ebuka-notes-bucket"
