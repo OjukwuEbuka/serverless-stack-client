@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 import { useAppContext } from "../libs/contextLib";
@@ -15,7 +14,6 @@ const Login = () => {
     // const [password, setPassword] = useState("");
     const { userHasAuthenticated, setUserEmail } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
-    const history = useHistory();
     const [fields, handleFieldChange] = useFormFields({email: "", password:""});
     const [notConfirmed, setNotConfirmed] = useState(false);
 
@@ -31,7 +29,6 @@ const Login = () => {
         try {
             await Auth.signIn(fields.email, fields.password);
             userHasAuthenticated(true);
-            history.push("/");
         } catch (err) {
             if(err instanceof Object && err.message === "User is not confirmed."){
                 setNotConfirmed(true);
