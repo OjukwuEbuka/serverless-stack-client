@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { 
     FormGroup, 
     FormControl, 
-    ControlLabel,
-    HelpBlock
+    ControlLabel
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 
-import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { useFormFields } from "../libs/hooksLib";
 

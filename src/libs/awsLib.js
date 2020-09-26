@@ -12,7 +12,7 @@ export async function s3Upload(file) {
 
 export async function s3Delete(filename) {
     try {
-        const res = await Storage.vault.remove(filename);
+        await Storage.vault.remove(filename);
         // console.log(res);
     } catch (err) {
         onError(err);

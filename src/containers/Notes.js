@@ -110,7 +110,7 @@ export default function Notes () {
                             <FormGroup>
                                 <ControlLabel>Attachment</ControlLabel>
                                 <div>
-                                    <img width="200" src={note.attachmentURL} />
+                                    <img width="200" src={note.attachmentURL} alt="Attached to blog post." />
                                 </div>
                                 <FormControl.Static>
                                     <a
